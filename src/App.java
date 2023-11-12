@@ -46,46 +46,36 @@ public class App {
 
     private void saveResultImage() {
         try {
-            String formatName;
+            if (resultImage != null) {
+                String[] supportedFormats = ImageIO.getWriterFormatNames();
+                boolean saved = false;
 
-            if (inputImage != null) {
-                String inputFormat = getFileFormat(inputImage);
-                if (inputFormat != null) {
-                    formatName = inputFormat;
-                    File outputfile = new File("result." + formatName);
-                    ImageIO.write(resultImage, formatName, outputfile);
-                    JOptionPane.showMessageDialog(
-                            null, "Result image saved as result." + formatName, "Success",
-                            JOptionPane.INFORMATION_MESSAGE);
+                for (String format : supportedFormats) {
+                    if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("jpeg") ||
+                            format.equalsIgnoreCase("png") || format.equalsIgnoreCase("jfif")) {
 
+                        File outputfile = new File("result." + format);
+                        ImageIO.write(resultImage, format, outputfile);
+
+                        saved = true;
+                        JOptionPane.showMessageDialog(
+                                null, "Result image saved as result." + format, "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        break; // Break after the first successful save
+                    }
                 }
-            }
 
+                if (!saved) {
+                    JOptionPane.showMessageDialog(null, "No suitable format found to save the result image", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No processed image to save", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error saving the result image", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    // Helper method to get the format of the input image
-    private String getFileFormat(BufferedImage inputImage) {
-        String formatName = null;
-        String[] supportedFormats = ImageIO.getWriterFormatNames();
-        for (String format : supportedFormats) {
-            if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("jpeg")) {
-                formatName = "jpg";
-                break;
-            }
-            if (format.equalsIgnoreCase("png")) {
-                formatName = "png";
-                break;
-            }
-            if (format.equalsIgnoreCase("jfif")) {
-                formatName = "jfif";
-                break;
-            }
-        }
-        return formatName;
     }
 
     private void displayImage(BufferedImage image) {
