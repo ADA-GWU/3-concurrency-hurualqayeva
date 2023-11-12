@@ -46,15 +46,46 @@ public class App {
 
     private void saveResultImage() {
         try {
-            File outputfile = new File("result.jpg");
-            ImageIO.write(resultImage, "jpg", outputfile);
-            // JOptionPane.showMessageDialog(null, "Result image saved as result.png",
-            // "Success",
-            // JOptionPane.INFORMATION_MESSAGE);
+            String formatName;
+
+            if (inputImage != null) {
+                String inputFormat = getFileFormat(inputImage);
+                if (inputFormat != null) {
+                    formatName = inputFormat;
+                    File outputfile = new File("result." + formatName);
+                    ImageIO.write(resultImage, formatName, outputfile);
+                    JOptionPane.showMessageDialog(
+                            null, "Result image saved as result." + formatName, "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error saving the result image", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    // Helper method to get the format of the input image
+    private String getFileFormat(BufferedImage inputImage) {
+        String formatName = null;
+        String[] supportedFormats = ImageIO.getWriterFormatNames();
+        for (String format : supportedFormats) {
+            if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("jpeg")) {
+                formatName = "jpg";
+                break;
+            }
+            if (format.equalsIgnoreCase("png")) {
+                formatName = "png";
+                break;
+            }
+            if (format.equalsIgnoreCase("jfif")) {
+                formatName = "jfif";
+                break;
+            }
+        }
+        return formatName;
     }
 
     private void displayImage(BufferedImage image) {
@@ -101,7 +132,13 @@ public class App {
 
         JRadioButton singleThread = new JRadioButton("Single Thread");
         JRadioButton multiThread = new JRadioButton("Multi Thread");
+        JButton saveButton = new JButton("Save Image");
 
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                saveResultImage(); // Call the method to save the processed image
+            }
+        });
         ButtonGroup group = new ButtonGroup();
         group.add(singleThread);
         group.add(multiThread);
@@ -139,6 +176,7 @@ public class App {
         controlPanel.add(singleThread);
         controlPanel.add(multiThread);
         controlPanel.add(processButton);
+        controlPanel.add(saveButton);
 
         frame.add(controlPanel, BorderLayout.NORTH);
         frame.pack();
@@ -177,7 +215,6 @@ public class App {
         }
 
         executor.shutdown();
-        saveResultImage();
     }
 
     private void processImageMultiThreaded() {
@@ -271,7 +308,6 @@ public class App {
             }
         });
         executor.shutdown();
-        saveResultImage();
 
     }
 
