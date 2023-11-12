@@ -54,12 +54,12 @@ public class App {
                     if (format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("jpeg") ||
                             format.equalsIgnoreCase("png") || format.equalsIgnoreCase("jfif")) {
 
-                        File outputfile = new File("result." + format);
+                        File outputfile = new File("result." + format.toLowerCase());
                         ImageIO.write(resultImage, format, outputfile);
 
                         saved = true;
                         JOptionPane.showMessageDialog(
-                                null, "Result image saved as result." + format, "Success",
+                                null, "Result image saved as result." + format.toLowerCase(), "Success",
                                 JOptionPane.INFORMATION_MESSAGE);
                         break; // Break after the first successful save
                     }
