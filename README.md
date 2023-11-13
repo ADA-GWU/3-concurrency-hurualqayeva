@@ -17,11 +17,7 @@ This Java-based application allows users to process images by averaging colors w
 
 1. **Running the Application**:
    - Execute the `main` method in the `App` class.
-   - ```
-     cd src
-     javac App.java
-     java App.java
-     ```
+
    
 2. **GUI Functions**:
    - **Open Image**: Select an image file to process.
@@ -41,3 +37,9 @@ This Java-based application allows users to process images by averaging colors w
 1. **Open the Project in an IDE**.
 2. **Run the Application** by executing the `main` method in the `App` class.
 3. **Use the GUI Controls** to load, process, and save images.
+
+   ```
+     cd src
+     javac App.java
+     java App.java
+     ```
